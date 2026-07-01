@@ -15,10 +15,5 @@ def main():
     print(f'No. of missing images:{len(missing_images)}')
     missing_titles=metadata['title'].isna().sum()
     print(f'Missing titles: {missing_titles}')
-    
-
-
-
-
 if __name__=="__main__":
     main()   #only executes main() if this file is run directly
