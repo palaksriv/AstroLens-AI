@@ -3,14 +3,14 @@ from pathlib import Path
 from torch.utils.data import Dataset
 from PIL import Image 
 class AstroLensDataset(Dataset): #to be able to use dataloader 
-    def __init__(self,data_dir=None):
+    def __init__(self,data_dir=None,csv_file='metadata.csv'):
         if data_dir is None:
             project_root=Path(__file__).resolve().parent.parent.parent
             self.processed_blip_dir=(project_root/'data'/'processed'/'blip')
         else:
             self.processed_blip_dir=Path(data_dir)
         self.images_dir=self.processed_blip_dir/'images'
-        self.metadata_path=self.processed_blip_dir/'metadata.csv'
+        self.metadata_path=self.processed_blip_dir/csv_file
         self.metadata=pd.read_csv(self.metadata_path)
     def __len__(self):
         return len(self.metadata)

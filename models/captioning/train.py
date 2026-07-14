@@ -17,7 +17,8 @@ CHECKPOINT_DIR.mkdir(exist_ok=True)
 device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
 
-dataset=AstroLensDataset()
+train_dataset=AstroLensDataset(csv_file='train.csv')
+val_dataset=AstroLensDataset(csv_file='val.csv')
 
 processor=BlipProcessor.from_pretrained(
     'Salesforce/blip-image-captioning-base')
@@ -33,18 +34,27 @@ def collate_fn(batch):
     inputs['labels']=labels
     return inputs
 
-dataloader=DataLoader(
-    dataset,
+train_dataloader=DataLoader(
+    train_dataset,
     batch_size=BATCH_SIZE,
     shuffle=True,
     collate_fn=collate_fn
 )
+val_dataloader = DataLoader(
+    val_dataset,
+    batch_size=BATCH_SIZE,
+    shuffle=False,
+    collate_fn=collate_fn
+)
 
-model.train()
+best_val_loss = float("inf")
+
 for epoch in range(NUM_EPOCHS):
+    model.train()
+
     print(f'\n Epoch {epoch+1}/{NUM_EPOCHS}')
     total_loss=0
-    for batch_idx,batch in enumerate(dataloader):
+    for batch_idx,batch in enumerate(train_dataloader):
         optimizer.zero_grad()
         batch={
                 key:value.to(device) for key, value in batch.items()
@@ -53,21 +63,27 @@ for epoch in range(NUM_EPOCHS):
         loss=outputs.loss
         loss.backward()
         optimizer.step()
-    
         total_loss+=loss.item()
         if batch_idx % 25==0:
-            print(f'Batch {batch_idx}/{len(dataloader)} | Loss: {loss.item():.4f}')
+            print(f'Batch {batch_idx}/{len(train_dataloader)} | Loss: {loss.item():.4f}')
     
-average_loss=total_loss/len(dataloader)
-print("Average training loss:",average_loss)
-checkpoint_path=CHECKPOINT_DIR/f'blip_poch_{epoch+1}.pth'
-torch.save(
-    {
-        'epoch':epoch+1,
-        'model_state_dict':model.state_dict(),
-        'optimizer_state_dict':optimizer.state_dict(),
-        'loss':average_loss,
-    },
-    checkpoint_path
-)
-print(f'Checkpoint saved to {checkpoint_path}')
+    average_loss=total_loss/len(train_dataloader)
+    print(f"Average training loss: {average_loss:.4f}")
+
+    model.eval()
+    val_loss=0
+    with torch.no_grad():
+        for batch in val_dataloader:
+            batch={
+                key:value.to(device) for key, value in batch.items()
+            }
+            outputs=model(**batch)
+            val_loss+=outputs.loss.item()
+        avg_val_loss=val_loss/len(val_dataloader)
+        print(f'Validation loss: {avg_val_loss:.4f}')
+        if avg_val_loss<best_val_loss:
+            best_val_loss=avg_val_loss
+        model.save_pretrained('models/fine_tuned_blip')
+        processor.save_pretrained('models/fine_tuned_blip')
+        print('Best model saved!')
+
