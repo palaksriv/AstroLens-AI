@@ -1,1 +1,8 @@
 .venv/
+.env
+__pycache__/
+*.pyc
+models/fine_tuned_blip/
+data/processed/chroma/
+results/
+.vscode/

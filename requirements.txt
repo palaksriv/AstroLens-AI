@@ -1,0 +1,16 @@
+torch
+torchvision
+transformers
+sentence-transformers
+pandas
+numpy
+Pillow
+scikit-learn
+nltk
+evaluate
+rouge-score
+chromadb
+tqdm
+huggingface-hub
+google-generativeai
+matplotlib
