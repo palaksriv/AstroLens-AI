@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 from torch.utils.data import Dataset
 from PIL import Image 
-class AstralVisionDataset(Dataset): #to be able to use dataloader 
+class AstroLensDataset(Dataset): #to be able to use dataloader 
     def __init__(self,data_dir=None,csv_file='metadata.csv',evaluation=False):
         if data_dir is None:
             project_root=Path(__file__).resolve().parent.parent.parent
@@ -26,7 +26,7 @@ class AstralVisionDataset(Dataset): #to be able to use dataloader
         return image,caption
 #testing
 if __name__=='__main__':
-    dataset=AstralVisionDataset(data_dir=r"C:\Users\HomePC1\Documents\prep\AstroLens-AI\data\processed\blip",evaluation=True)
+    dataset=AstroLensDataset(data_dir=r"C:\Users\HomePC1\Documents\prep\AstroLens-AI\data\processed\blip",evaluation=True)
     print(dataset.metadata.head())
     print(f'Dataset size: {len(dataset)}')
     image,caption,image_name=dataset[0]

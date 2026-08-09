@@ -1,6 +1,6 @@
-from captioning.inference import generate_caption
-from rag.retriever import retrieve_documents
-from rag.gemini import generate_observation
+from models.captioning.inference import generate_caption
+from models.rag.retriever import retrieve_documents
+from models.rag.gemini import generate_observation
 def analyze_astronomy_image(image_path):
     print('Generating caption...')
     caption=generate_caption(image_path)

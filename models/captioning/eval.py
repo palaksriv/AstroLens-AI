@@ -7,7 +7,7 @@ from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from rouge_score import rouge_scorer
 from evaluate import load
 from tqdm import tqdm
-from dataset import AstralVisionDataset
+from dataset import AstroLensDataset
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 BATCH_SIZE = 4

@@ -3,7 +3,7 @@ from pathlib import Path
 from torch.utils.data import DataLoader
 from torch.optim import AdamW
 from transformers import BlipProcessor #processor only
-from dataset import AstralVisionDataset
+from dataset import AstroLensDataset
 from transformers import BlipForConditionalGeneration #neural net
 
 BATCH_SIZE=4
