@@ -14,3 +14,4 @@ tqdm
 huggingface-hub
 google-generativeai
 matplotlib
+fastapi
