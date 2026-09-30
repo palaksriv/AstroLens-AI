@@ -17,7 +17,7 @@ CHECKPOINT_DIR.mkdir(exist_ok=True)
 device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
 
-train_dataset=AstralVisionDataset(csv_file='train.csv')
+train_dataset=AstroLensDataset(csv_file='train.csv')
 val_dataset=AstralVisionDataset(csv_file='val.csv')
 
 processor=BlipProcessor.from_pretrained(
