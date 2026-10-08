@@ -1,8 +1,23 @@
+# Python
 .venv/
-.env
 __pycache__/
 *.pyc
+
+# Secrets
+.env
+
+# Large / generated artifacts
 models/fine_tuned_blip/
 data/processed/chroma/
+data/uploads/
+checkpoints/
 results/
+*.zip
+
+# Frontend
+node_modules/
+frontend/dist/
+
+# Editors / OS
 .vscode/
+.DS_Store

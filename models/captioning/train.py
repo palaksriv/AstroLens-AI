@@ -3,7 +3,7 @@ from pathlib import Path
 from torch.utils.data import DataLoader
 from torch.optim import AdamW
 from transformers import BlipProcessor #processor only
-from dataset import AstroLensDataset
+from .dataset import AstroLensDataset
 from transformers import BlipForConditionalGeneration #neural net
 
 BATCH_SIZE=4
@@ -11,14 +11,14 @@ LEARNING_RATE=1e-5
 NUM_EPOCHS=5
 PRINT_EVERY=25
 
-CHECKPOINT_DIR=Path('checkpoints')
-CHECKPOINT_DIR.mkdir(exist_ok=True)
+PROJECT_ROOT=Path(__file__).resolve().parent.parent.parent
+OUTPUT_DIR=PROJECT_ROOT/'models'/'fine_tuned_blip'  # same path inference.py loads from
 
 device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
 
 train_dataset=AstroLensDataset(csv_file='train.csv')
-val_dataset=AstralVisionDataset(csv_file='val.csv')
+val_dataset=AstroLensDataset(csv_file='val.csv')
 
 processor=BlipProcessor.from_pretrained(
     'Salesforce/blip-image-captioning-base')
@@ -64,7 +64,7 @@ for epoch in range(NUM_EPOCHS):
         loss.backward()
         optimizer.step()
         total_loss+=loss.item()
-        if batch_idx % 25==0:
+        if batch_idx % PRINT_EVERY==0:
             print(f'Batch {batch_idx}/{len(train_dataloader)} | Loss: {loss.item():.4f}')
     
     average_loss=total_loss/len(train_dataloader)
@@ -83,7 +83,8 @@ for epoch in range(NUM_EPOCHS):
         print(f'Validation loss: {avg_val_loss:.4f}')
         if avg_val_loss<best_val_loss:
             best_val_loss=avg_val_loss
-            model.save_pretrained('models/fine_tuned_blip')
-            processor.save_pretrained('models/fine_tuned_blip')
+            OUTPUT_DIR.mkdir(parents=True,exist_ok=True)
+            model.save_pretrained(OUTPUT_DIR)
+            processor.save_pretrained(OUTPUT_DIR)
             print('Best model saved!')
 

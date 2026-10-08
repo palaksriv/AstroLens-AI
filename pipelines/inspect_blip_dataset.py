@@ -1,10 +1,10 @@
-import os 
 import pandas as pd
 from pathlib import Path
-METADATA_PATH="data/raw/blip/metadata.csv"
-IMAGES_FOLDER=Path("data/raw/blip/images")
+PROJECT_ROOT=Path(__file__).resolve().parent.parent
+METADATA_PATH=PROJECT_ROOT/"data"/"raw"/"blip"/"metadata.csv"
+IMAGES_FOLDER=PROJECT_ROOT/"data"/"raw"/"blip"/"images"
 def main():
-    print('AstroLens AI- BLIP dataset inspection')
+    print('AstralVision AI - BLIP dataset inspection')
     metadata=pd.read_csv(METADATA_PATH)
     print(f'Metadata Entries:{len(metadata)}')
     images=list(IMAGES_FOLDER.iterdir())

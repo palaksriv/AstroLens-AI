@@ -1,3 +1,4 @@
+# --- ML / CV ---
 torch
 torchvision
 transformers
@@ -9,9 +10,16 @@ scikit-learn
 nltk
 evaluate
 rouge-score
-chromadb
-tqdm
 huggingface-hub
-google-generativeai
+tqdm
 matplotlib
+
+# --- RAG ---
+chromadb
+google-genai        # imported as `from google import genai` (was google-generativeai, the old/incompatible SDK)
+python-dotenv       # was missing; used by models/rag/gemini.py
+
+# --- Backend ---
 fastapi
+uvicorn[standard]   # was missing; needed to run backend.main:app
+python-multipart    # was missing; FastAPI needs it for UploadFile

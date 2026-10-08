@@ -17,7 +17,7 @@ RESULTS_DIR.mkdir(exist_ok=True)
 smooth = SmoothingFunction().method1
 rouge = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True)
 meteor = load("meteor")
-test_dataset = AstralVisionDataset(csv_file="test.csv",evaluation=True)
+test_dataset = AstroLensDataset(csv_file="test.csv",evaluation=True)
 
 def collate_fn(batch):
     images, captions, image_names = zip(*batch)
@@ -66,7 +66,9 @@ def evaluate(model_type):
         with torch.no_grad():
             outputs = model.generate(
                 **inputs,
-                max_new_tokens=50,
+                max_new_tokens=30,
+                num_beams=5,
+                early_stopping=True,
             )
 
         decoded = processor.batch_decode(
