@@ -73,7 +73,7 @@ Crab Nebula                  0.14%
 
 The highest-ranked recognition is used as the query for the astronomy knowledge retrieval stage.
 
-🖼️ Fine-tuned Image Captioning
+🌌 Fine-tuned Image Captioning
 
 A fine-tuned BLIP model generates a caption describing the uploaded astronomical image.
 
@@ -83,7 +83,7 @@ models/fine_tuned_blip/
 
 The checkpoint is not included in Git because of its size.
 
-📚 Astronomy Knowledge Retrieval
+🪐 Astronomy Knowledge Retrieval
 
 AstroLens uses:
 
@@ -95,7 +95,7 @@ to retrieve semantically relevant astronomy information.
 
 The knowledge base contains astronomy observations and NASA Astronomy Picture of the Day (APOD) information.
 
-✨ Scientific Analysis
+🔭 Scientific Analysis
 
 Gemini receives the recognized object, generated caption, and retrieved astronomy knowledge to produce:
 
